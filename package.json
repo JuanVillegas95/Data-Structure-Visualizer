@@ -1,15 +1,21 @@
 {
-  "name": "a",
+  "name": "data-structure-visualizer",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev:wasm": "emcc vector.c -o vector.js -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\"]' -s MODULARIZE=1 -s 'EXPORT_NAME=\"createVectorModule\"'",
+    "dev:vite": "vite",
+    "dev": "concurrently \"npm run dev:wasm\" \"npm run dev:vite\"",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "d3": "^7.9.0"
   }
 }
