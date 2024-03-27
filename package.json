@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev:wasm": "emcc vector.c -o vector.js -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\"]' -s MODULARIZE=1 -s 'EXPORT_NAME=\"createVectorModule\"'",
+    "dev:wasm": "emcc data_structures.c -o data-structures.js -s EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\"]' -s MODULARIZE=1 -s 'EXPORT_NAME=\"dataStructuresModule\"'",
     "dev:vite": "vite",
     "dev": "concurrently \"npm run dev:wasm\" \"npm run dev:vite\"",
     "build": "tsc && vite build",
@@ -16,6 +16,6 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "d3": "^7.9.0"
+    "animejs": "^3.2.2"
   }
 }

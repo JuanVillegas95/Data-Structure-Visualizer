@@ -1,5 +1,5 @@
 
-var createVectorModule = (() => {
+var dataStructuresModule = (() => {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
   if (typeof __filename !== 'undefined') _scriptDir ||= __filename;
   return (
@@ -27,7 +27,7 @@ Module['ready'] = new Promise((resolve, reject) => {
   readyPromiseResolve = resolve;
   readyPromiseReject = reject;
 });
-["_memory","_vector_initialize","_vector_get_size","_vector_get_capacity","___indirect_function_table","_main","onRuntimeInitialized"].forEach((prop) => {
+["_memory","_vector_initialize","_vector_get_size","_vector_get_capacity","_vector_destroy","_vector_push","_vector_display","_vector_pop","_vector_get","_vector_set","_vector_max","_vector_min","_vector_sum","_vector_avg","_vector_insert","_vector_delete","_vector_reverse","_vector_left_shift","_vector_concat","_vector_compare","_vector_copy","_vector_is_sorted","_vector_binary_search","___indirect_function_table","_main","onRuntimeInitialized"].forEach((prop) => {
   if (!Object.getOwnPropertyDescriptor(Module['ready'], prop)) {
     Object.defineProperty(Module['ready'], prop, {
       get: () => abort('You are getting ' + prop + ' on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js'),
@@ -728,7 +728,7 @@ function createExportWrapper(name) {
 // include: runtime_exceptions.js
 // end include: runtime_exceptions.js
 var wasmBinaryFile;
-  wasmBinaryFile = 'vector.wasm';
+  wasmBinaryFile = 'data-structures.wasm';
   if (!isDataURI(wasmBinaryFile)) {
     wasmBinaryFile = locateFile(wasmBinaryFile);
   }
@@ -1069,6 +1069,8 @@ function dbg(...args) {
         err(text);
       }
     };
+
+  var _emscripten_memcpy_js = (dest, src, num) => HEAPU8.copyWithin(dest, src, src + num);
 
   var getHeapMax = () =>
       HEAPU8.length;
@@ -1422,6 +1424,8 @@ function checkIncomingModuleAPI() {
 }
 var wasmImports = {
   /** @export */
+  emscripten_memcpy_js: _emscripten_memcpy_js,
+  /** @export */
   emscripten_resize_heap: _emscripten_resize_heap,
   /** @export */
   fd_write: _fd_write
@@ -1431,6 +1435,25 @@ var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors');
 var _vector_initialize = Module['_vector_initialize'] = createExportWrapper('vector_initialize');
 var _vector_get_size = Module['_vector_get_size'] = createExportWrapper('vector_get_size');
 var _vector_get_capacity = Module['_vector_get_capacity'] = createExportWrapper('vector_get_capacity');
+var _vector_destroy = Module['_vector_destroy'] = createExportWrapper('vector_destroy');
+var _vector_push = Module['_vector_push'] = createExportWrapper('vector_push');
+var _vector_display = Module['_vector_display'] = createExportWrapper('vector_display');
+var _vector_pop = Module['_vector_pop'] = createExportWrapper('vector_pop');
+var _vector_get = Module['_vector_get'] = createExportWrapper('vector_get');
+var _vector_set = Module['_vector_set'] = createExportWrapper('vector_set');
+var _vector_max = Module['_vector_max'] = createExportWrapper('vector_max');
+var _vector_min = Module['_vector_min'] = createExportWrapper('vector_min');
+var _vector_sum = Module['_vector_sum'] = createExportWrapper('vector_sum');
+var _vector_avg = Module['_vector_avg'] = createExportWrapper('vector_avg');
+var _vector_insert = Module['_vector_insert'] = createExportWrapper('vector_insert');
+var _vector_delete = Module['_vector_delete'] = createExportWrapper('vector_delete');
+var _vector_reverse = Module['_vector_reverse'] = createExportWrapper('vector_reverse');
+var _vector_left_shift = Module['_vector_left_shift'] = createExportWrapper('vector_left_shift');
+var _vector_concat = Module['_vector_concat'] = createExportWrapper('vector_concat');
+var _vector_compare = Module['_vector_compare'] = createExportWrapper('vector_compare');
+var _vector_copy = Module['_vector_copy'] = createExportWrapper('vector_copy');
+var _vector_is_sorted = Module['_vector_is_sorted'] = createExportWrapper('vector_is_sorted');
+var _vector_binary_search = Module['_vector_binary_search'] = createExportWrapper('vector_binary_search');
 var _main = Module['_main'] = createExportWrapper('__main_argc_argv');
 var _fflush = createExportWrapper('fflush');
 var _emscripten_stack_init = () => (_emscripten_stack_init = wasmExports['emscripten_stack_init'])();
@@ -1880,6 +1903,6 @@ run();
 );
 })();
 if (typeof exports === 'object' && typeof module === 'object')
-  module.exports = createVectorModule;
+  module.exports = dataStructuresModule;
 else if (typeof define === 'function' && define['amd'])
-  define([], () => createVectorModule);
+  define([], () => dataStructuresModule);
